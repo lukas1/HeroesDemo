@@ -1,0 +1,8 @@
+apply from: '../build-common-android-library.gradle'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(':core')
+    implementation "com.android.support:recyclerview-v7:$androidSupportLibrary"
+}

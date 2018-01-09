@@ -1,0 +1,11 @@
+apply plugin: 'com.android.application'
+
+apply from: '../build-common-android.gradle'
+
+apply from: '../build-common-dependencies.gradle'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':core')
+    implementation project(':herolist')
+}
