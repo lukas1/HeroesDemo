@@ -1,1 +1,1 @@
-include ':app', ':mvp', ':core', ':herolist', ':network'
+include ':app', ':mvp', ':core', ':herolist', ':network', ':heroesshared'
