@@ -1,0 +1,7 @@
+apply from: '../build-common-android-library.gradle'
+
+dependencies {
+    implementation project(':core')
+    implementation project(':mvp')
+    implementation project(':network')
+}

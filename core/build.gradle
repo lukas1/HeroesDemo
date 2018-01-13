@@ -3,7 +3,6 @@ apply from: '../build-common-android-library.gradle'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    api project(':mvp')
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
 

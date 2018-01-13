@@ -1,0 +1,11 @@
+apply from: '../build-common-android-library.gradle'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    api project(':core')
+
+    // Retrofit for consuming API
+    api "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+}
