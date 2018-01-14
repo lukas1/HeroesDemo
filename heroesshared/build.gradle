@@ -1,5 +1,15 @@
 apply from: '../build-common-android-library.gradle'
 
+android {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+    buildTypes.each {
+        it.buildConfigField 'String', 'MARVEL_API_PUBLIC_KEY', properties.getProperty('marvelPublicKey')
+        it.buildConfigField 'String', 'MARVEL_API_PRIVATE_KEY', properties.getProperty('marvelPrivateKey')
+    }
+}
+
 dependencies {
     implementation project(':core')
     implementation project(':mvp')
