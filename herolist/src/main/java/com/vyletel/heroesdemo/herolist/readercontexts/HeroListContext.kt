@@ -2,11 +2,11 @@ package com.vyletel.heroesdemo.herolist.readercontexts
 
 import com.vyletel.fparch.core.AndroidCoroutineAsyncRunner
 import com.vyletel.fparch.core.AsyncRunner
+import com.vyletel.heroesdemo.heroesshared.dataaccess.marvelRetrofit
 import com.vyletel.heroesdemo.herolist.datamodel.HeroError
-import com.vyletel.heroesdemo.herolist.datamodel.HeroId
 import com.vyletel.heroesdemo.herolist.datamodel.HeroList
-import com.vyletel.heroesdemo.herolist.datamodel.HeroListItem
 import com.vyletel.heroesdemo.herolist.dataaccess.HeroListDataSource
+import com.vyletel.heroesdemo.herolist.dataaccess.HeroListService
 
 /**
  * Created by lukas on 06/01/2018.
@@ -25,13 +25,7 @@ interface HeroListResultHandler {
 class HeroListContextImpl(override val resultHandler: HeroListResultHandler) : HeroListContext {
     override val dataSource: HeroListDataSource
         get() = object : HeroListDataSource {
-            override fun fetchData() = listOf(
-                    HeroListItem(HeroId("AB"), "A"),
-                    HeroListItem(HeroId("BA"), "BA"),
-                    HeroListItem(HeroId("BB"), "BB"),
-                    HeroListItem(HeroId("BC"), "BC"),
-                    HeroListItem(HeroId("BA"), "BA")
-            )
+            override fun fetchData() = marvelRetrofit.create(HeroListService::class.java).getHeroes().execute().body() ?: listOf()
         }
 
     override val asyncRunner: AsyncRunner
