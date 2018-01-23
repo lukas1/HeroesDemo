@@ -1,6 +1,5 @@
 package com.vyletel.heroesdemo.herolist.dataaccess
 
-import com.vyletel.heroesdemo.herolist.datamodel.HeroList
 import retrofit2.Call
 import retrofit2.http.GET
 
@@ -10,6 +9,6 @@ import retrofit2.http.GET
 interface HeroListService {
 
     @GET("characters")
-    fun getHeroes(): Call<HeroList>
+    fun getHeroes(): Call<HeroListResponse>
 
 }

@@ -7,6 +7,8 @@ import com.vyletel.heroesdemo.herolist.datamodel.HeroError
 import com.vyletel.heroesdemo.herolist.datamodel.HeroList
 import com.vyletel.heroesdemo.herolist.dataaccess.HeroListDataSource
 import com.vyletel.heroesdemo.herolist.dataaccess.HeroListService
+import com.vyletel.heroesdemo.herolist.datamodel.HeroId
+import com.vyletel.heroesdemo.herolist.datamodel.HeroListItem
 
 /**
  * Created by lukas on 06/01/2018.
@@ -25,7 +27,13 @@ interface HeroListResultHandler {
 class HeroListContextImpl(override val resultHandler: HeroListResultHandler) : HeroListContext {
     override val dataSource: HeroListDataSource
         get() = object : HeroListDataSource {
-            override fun fetchData() = marvelRetrofit.create(HeroListService::class.java).getHeroes().execute().body() ?: listOf()
+            override fun fetchData() = marvelRetrofit.create(HeroListService::class.java).getHeroes().execute().body()?.data?.results?.mapNotNull {
+                it.id?.let { id ->
+                    it.name?.let { name ->
+                        HeroListItem(HeroId(id), name)
+                    }
+                }
+            } ?: listOf()
         }
 
     override val asyncRunner: AsyncRunner
