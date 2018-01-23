@@ -10,12 +10,14 @@ import java.security.MessageDigest
  */
 class MarvelHttpInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
+        val timestamp: Long = System.currentTimeMillis()/1000
         val originalRequest = chain.request()
         val originalUrl = originalRequest.url()
         val modifiedUrl = originalUrl.newBuilder()
                 .addQueryParameter("apikey", BuildConfig.MARVEL_API_PUBLIC_KEY)
-                .addQueryParameter("ts", computeTsParameter(
-                        System.currentTimeMillis()/1000,
+                .addQueryParameter("ts", "$timestamp")
+                .addQueryParameter("hash", computeTsParameter(
+                        timestamp,
                         BuildConfig.MARVEL_API_PRIVATE_KEY,
                         BuildConfig.MARVEL_API_PUBLIC_KEY
                 ))
