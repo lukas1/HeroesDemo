@@ -2,17 +2,24 @@ package com.vyletel.heroesdemo.herolist.readercontexts
 
 import com.vyletel.fparch.core.AndroidCoroutineAsyncRunner
 import com.vyletel.fparch.core.AsyncRunner
-import com.vyletel.heroesdemo.heroesshared.dataaccess.marvelRetrofit
-import com.vyletel.heroesdemo.herolist.datamodel.HeroError
+import com.vyletel.heroesdemo.heroesshared.dataaccess.MarvelRetrofitReaderContext
 import com.vyletel.heroesdemo.herolist.datamodel.HeroList
 import com.vyletel.heroesdemo.herolist.dataaccess.HeroListDataSource
+import com.vyletel.heroesdemo.herolist.dataaccess.HeroListResponse
+import com.vyletel.heroesdemo.herolist.dataaccess.HeroListResponseConverter
 import com.vyletel.heroesdemo.herolist.dataaccess.HeroListService
-import com.vyletel.heroesdemo.herolist.datamodel.HeroId
-import com.vyletel.heroesdemo.herolist.datamodel.HeroListItem
+import com.vyletel.network.DataFetchingError
+import com.vyletel.network.fetchDataViaRetrofit
 
 /**
  * Created by lukas on 06/01/2018.
  */
+val heroListRetrofitContext = MarvelRetrofitReaderContext(
+        HeroListService::class.java,
+        HeroListResponseConverter(),
+        { it.getHeroes() }
+)
+
 interface HeroListContext {
     val dataSource: HeroListDataSource
     val resultHandler: HeroListResultHandler
@@ -21,19 +28,13 @@ interface HeroListContext {
 
 interface HeroListResultHandler {
     fun drawHeroes(heroes: HeroList)
-    fun showError(error: HeroError)
+    fun showError(error: DataFetchingError)
 }
 
 class HeroListContextImpl(override val resultHandler: HeroListResultHandler) : HeroListContext {
     override val dataSource: HeroListDataSource
         get() = object : HeroListDataSource {
-            override fun fetchData() = marvelRetrofit.create(HeroListService::class.java).getHeroes().execute().body()?.data?.results?.mapNotNull {
-                it.id?.let { id ->
-                    it.name?.let { name ->
-                        HeroListItem(HeroId(id), name)
-                    }
-                }
-            } ?: listOf()
+            override fun fetchData() = fetchDataViaRetrofit<HeroListService, HeroListResponse, HeroList>().run(heroListRetrofitContext)
         }
 
     override val asyncRunner: AsyncRunner

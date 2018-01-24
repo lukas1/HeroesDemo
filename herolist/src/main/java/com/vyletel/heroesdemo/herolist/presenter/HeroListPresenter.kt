@@ -2,13 +2,13 @@ package com.vyletel.heroesdemo.herolist.presenter
 
 import com.vyletel.fparch.core.Reader
 import com.vyletel.heroesdemo.herolist.presenter.HeroListPresenter.HeroListView
-import com.vyletel.heroesdemo.herolist.datamodel.HeroError
 import com.vyletel.heroesdemo.herolist.datamodel.HeroList
 import com.vyletel.heroesdemo.herolist.readercontexts.HeroListContext
 import com.vyletel.heroesdemo.herolist.readercontexts.HeroListContextImpl
 import com.vyletel.heroesdemo.herolist.readercontexts.HeroListResultHandler
 import com.vyletel.heroesdemo.herolist.usecase.getHeroesUseCase
 import com.vyletel.loadermvp.BasePresenter
+import com.vyletel.network.DataFetchingError
 
 /**
  * Created by lukas on 05/01/2018.
@@ -51,7 +51,7 @@ class HeroListPresenter : BasePresenter<HeroListView>(), HeroListResultHandler {
         view?.drawHeroes(heroes)
     }
 
-    override fun showError(error: HeroError) {
+    override fun showError(error: DataFetchingError) {
         view?.showError()
     }
 }

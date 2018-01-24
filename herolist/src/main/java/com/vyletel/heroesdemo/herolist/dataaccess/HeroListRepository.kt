@@ -1,11 +1,8 @@
 package com.vyletel.heroesdemo.herolist.dataaccess
 
-import com.vyletel.fparch.core.Either
 import com.vyletel.fparch.core.IO
 import com.vyletel.fparch.core.Reader
 import com.vyletel.heroesdemo.herolist.datamodel.FetchHeroListResult
-import com.vyletel.heroesdemo.herolist.datamodel.HeroError
-import com.vyletel.heroesdemo.herolist.datamodel.HeroList
 import com.vyletel.heroesdemo.herolist.readercontexts.HeroListContext
 
 /**
@@ -14,8 +11,5 @@ import com.vyletel.heroesdemo.herolist.readercontexts.HeroListContext
 fun fetchHeroes(): Reader<HeroListContext, IO<FetchHeroListResult>> = Reader
         .ask<HeroListContext>()
         .map {
-            IO.Async { fetchHeroesAsynchronously(it.dataSource) }
+            IO.Async { it.dataSource.fetchData() }
         }
-
-private fun fetchHeroesAsynchronously(dataSource: HeroListDataSource) =
-        Either.Success<HeroError, HeroList>(dataSource.fetchData())
