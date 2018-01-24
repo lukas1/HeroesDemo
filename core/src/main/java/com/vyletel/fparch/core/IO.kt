@@ -1,8 +1,5 @@
 package com.vyletel.fparch.core
 
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
-
 /**
  * Created by lukas on 05/01/2018.
  */
@@ -25,5 +22,3 @@ sealed class IO<out Result>(protected val ioBlock: () -> Result) {
                 Async { block(ioBlock()) }
     }
 }
-
-suspend fun <Result>runBlockAsync(ioBlock: () -> Result) = async(CommonPool) { ioBlock() }
