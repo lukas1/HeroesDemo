@@ -7,21 +7,21 @@ import kotlinx.coroutines.experimental.android.UI
  * Created by lukas on 07/01/2018.
  */
 interface AsyncRunner {
-    fun <T>runAsync(task: () -> T)
+    fun <T>runAsync(mainThreadTask: (T) -> Unit, asyncResultTask: () -> T)
 }
 
 class AndroidCoroutineAsyncRunner: AsyncRunner {
-    override fun <T>runAsync(task: () -> T) {
+    override fun <T>runAsync(mainThreadTask: (T) -> Unit, asyncResultTask: () -> T) {
         launch(UI) {
-            asyncTask { task() }.await()
+            mainThreadTask(asyncTask { asyncResultTask() }.await())
         }
     }
 }
 
 class BlockingCoroutineAsyncRunner: AsyncRunner {
-    override fun <T>runAsync(task: () -> T) {
+    override fun <T>runAsync(mainThreadTask: (T) -> Unit, asyncResultTask: () -> T) {
         runBlocking {
-            asyncTask { task() }.await()
+            mainThreadTask(asyncTask { asyncResultTask() }.await())
         }
     }
 }
