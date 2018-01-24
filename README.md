@@ -10,10 +10,10 @@ Main idea is, that holding state and side effects should be pushed to edges of t
 ## MVP
 Since it's a bit difficult to deal with configuration changes and the fact, that activities might not exist by the time network
 calls or other asynchronous operations are finished, this issue is solved by introducing Presenters, that hold state - reference
-to their views. Presenters in this setup are considered as the UI edge of the architecture.
+to their views. Presenters in this setup are considered the UI edge of the architecture.
 
 To retain instance of ongoing network calls etc, Presenters are kept in memory using `Loader`. `Loader` takes care of Presenter
-surviving configuration changes and it also destroys presenters when they're no longer necessary (activity is completely destroed, etc)
+surviving configuration changes and it also destroys presenters when they're no longer necessary (activity is completely destroyed, etc)
 
 ## Mutli-module architecture
 Project features multi-module architecture, so that implementations of MVP, or data source code or similar can be changed later.
