@@ -1,6 +1,7 @@
 package com.vyletel.heroesdemo.herolist.datamodel
 
 import com.vyletel.fparch.core.Either
+import com.vyletel.heroesdemo.heroesshared.dataaccess.datamodels.PagingData
 import com.vyletel.network.DataFetchingError
 
 /**
@@ -10,6 +11,9 @@ data class HeroId(val value: String)
 
 data class HeroListItem(val heroId: HeroId, val name: String)
 
-typealias HeroList = List<HeroListItem>
+data class HeroList(
+        val pagingData: PagingData,
+        val values: List<HeroListItem>
+)
 
 typealias FetchHeroListResult = Either<DataFetchingError, HeroList>

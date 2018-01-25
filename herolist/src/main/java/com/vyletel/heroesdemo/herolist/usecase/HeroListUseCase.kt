@@ -14,6 +14,9 @@ fun getHeroesUseCase(): Reader<HeroListContext, IO<FetchHeroListResult>> = fetch
     io.map { eitherHeroes -> eitherHeroes.map { filterHeroes(it) } }
 }
 
-private fun filterHeroes(heroList: HeroList) = heroList.filter {
-    !it.name.isEmpty()
-}
+private fun filterHeroes(heroList: HeroList) = HeroList(
+        heroList.pagingData,
+        heroList.values.filter {
+            !it.name.isEmpty()
+        }
+)

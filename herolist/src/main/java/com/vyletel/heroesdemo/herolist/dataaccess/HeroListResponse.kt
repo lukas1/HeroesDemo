@@ -8,6 +8,9 @@ data class HeroListResponse(
 )
 
 data class HeroListResponseData(
+        val offset: Int,
+        val limit: Int,
+        val total: Int,
         val results: List<HeroListResponseListItem>?
 )
 

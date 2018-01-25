@@ -3,6 +3,7 @@ package com.vyletel.heroesdemo.herolist.presenter
 import com.vyletel.fparch.core.AsyncRunner
 import com.vyletel.fparch.core.BlockingCoroutineAsyncRunner
 import com.vyletel.fparch.core.Either
+import com.vyletel.heroesdemo.heroesshared.dataaccess.datamodels.PagingData
 import com.vyletel.heroesdemo.herolist.presenter.HeroListPresenter.HeroListView
 import com.vyletel.heroesdemo.herolist.datamodel.HeroId
 import com.vyletel.heroesdemo.herolist.datamodel.HeroList
@@ -19,22 +20,25 @@ class HeroListPresenterTest {
     fun shouldDrawHeroListWith3Items() {
         preparePresenter(
                 object : HeroListDataSource {
-                    override fun fetchData() = Either.Success<DataFetchingError, HeroList>(listOf(
-                            HeroListItem(HeroId("1"), "A"),
-                            HeroListItem(HeroId("1"), ""),
-                            HeroListItem(HeroId("1"), "B"),
-                            HeroListItem(HeroId("1"), ""),
-                            HeroListItem(HeroId("1"), "C")
+                    override fun fetchData() = Either.Success<DataFetchingError, HeroList>(HeroList(
+                            PagingData(),
+                            listOf(
+                                    HeroListItem(HeroId("1"), "A"),
+                                    HeroListItem(HeroId("1"), ""),
+                                    HeroListItem(HeroId("1"), "B"),
+                                    HeroListItem(HeroId("1"), ""),
+                                    HeroListItem(HeroId("1"), "C")
+                            )
                     ))
                 }
         ).attachView(object : HeroListView {
             override fun drawHeroes(heroes: HeroList) {
-                assertEquals(heroes.count(), 3)
-                assertEquals(heroes.first().name, "A")
-                assertEquals(heroes.last().name, "C")
+                assertEquals(heroes.values.count(), 3)
+                assertEquals(heroes.values.first().name, "A")
+                assertEquals(heroes.values.last().name, "C")
             }
 
-            override fun showError() {
+            override fun showError(error: DataFetchingError) {
                 assertTrue(false) // Should not be called
             }
         })

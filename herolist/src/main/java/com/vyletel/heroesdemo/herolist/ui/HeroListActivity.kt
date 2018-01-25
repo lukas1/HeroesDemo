@@ -34,7 +34,7 @@ class HeroListActivity : MvpActivity<HeroListView, HeroListPresenter>(), HeroLis
     }
 
     override fun drawHeroes(heroes: HeroList) {
-        adapter.heroes = heroes
+        adapter.heroList = heroes
     }
 
     override fun showError(error: DataFetchingError) {
