@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="conversion_error">Fetched data is corrupted</string>
+    <string name="network_error">Fetching data via network failed</string>
+</resources>

@@ -21,7 +21,7 @@ class HeroListPresenter : BasePresenter<HeroListView>(), HeroListResultHandler {
 
     interface HeroListView {
         fun drawHeroes(heroes: HeroList)
-        fun showError()
+        fun showError(error: DataFetchingError)
     }
 
     private lateinit var listContext: HeroListContext
@@ -52,6 +52,6 @@ class HeroListPresenter : BasePresenter<HeroListView>(), HeroListResultHandler {
     }
 
     override fun showError(error: DataFetchingError) {
-        view?.showError()
+        view?.showError(error)
     }
 }

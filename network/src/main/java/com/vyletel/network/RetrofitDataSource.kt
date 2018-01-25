@@ -1,5 +1,6 @@
 package com.vyletel.network
 
+import com.vyletel.fparch.core.ConversionException
 import com.vyletel.fparch.core.Either
 import com.vyletel.fparch.core.Reader
 import retrofit2.Call
@@ -22,6 +23,8 @@ fun <Service, Response, DomainModel> fetchDataViaRetrofit() = Reader
                 executeRequest(context)?.let {
                     convertAndWrap(context.responseConverter, it)
                 } ?: Either.Fail<DataFetchingError, DomainModel>(DataFetchingError.NetworkError)
+            } catch (_: ConversionException) {
+                Either.Fail<DataFetchingError, DomainModel>(DataFetchingError.ConversionError)
             } catch (_: Exception) {
                 Either.Fail<DataFetchingError, DomainModel>(DataFetchingError.NetworkError)
             }
@@ -35,4 +38,8 @@ private fun <Service>createService(context: RetrofitDataSourceContext<Service, *
 
 private fun <Response, DomainModel> convertAndWrap(
         responseConverter: Converter<Response, DomainModel>, response: Response
-) = Either.Success<DataFetchingError, DomainModel>(responseConverter.convert(response))
+) = try {
+    Either.Success<DataFetchingError, DomainModel>(responseConverter.convert(response))
+} catch (exception: Exception) {
+    throw ConversionException(exception.message)
+}
